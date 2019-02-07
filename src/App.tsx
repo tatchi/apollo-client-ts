@@ -7,7 +7,7 @@ import { HttpLink } from "apollo-link-http";
 import { withClientState } from "apollo-link-state";
 import { ApolloProvider, Query, QueryResult } from "react-apollo";
 import gql from "graphql-tag";
-import { getCurrency } from "./graphTypes/getCurrency";
+import { GetCurrencyQuery, GetCurrencyVariables } from "../components";
 import TodoList from "./TodoList";
 import { ApolloLink } from "apollo-link";
 
@@ -35,14 +35,17 @@ export const MYQ = gql`
 const ExchangeRates = () => (
   <>
     <TodoList />
-    <Query query={MYQ} variables={{ curr: "USD" }}>
-      {({ loading, error, data }: QueryResult<getCurrency>) => {
+    <Query<GetCurrencyQuery, GetCurrencyVariables>
+      query={MYQ}
+      variables={{ curr: "USD" }}
+    >
+      {({ loading, error, data }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Error :(</p>;
         return data.rates.map(({ currency, rate }) => (
           <div key={currency}>
             <p>
-              {currency}: {rate} : {name}
+              {currency}: {rate}
             </p>
           </div>
         ));

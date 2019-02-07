@@ -27,25 +27,27 @@ export type GetCurrencyRates = {
 
   currency: Maybe<string>;
 
-  name: Maybe<string>;
-
   rate: Maybe<string>;
 };
 
-export type GetCurrency33Variables = {
-  curr: string;
-};
+export type TodosVariables = {};
 
-export type GetCurrency33Query = {
+export type TodosQuery = {
   __typename?: "Query";
 
-  rates: Maybe<GetCurrency33Rates[]>;
+  todos: Maybe<TodosTodos[]>;
+
+  visibilityFilter: Maybe<string>;
 };
 
-export type GetCurrency33Rates = {
-  __typename?: "ExchangeRate";
+export type TodosTodos = {
+  __typename?: "Todo";
 
-  rate: Maybe<string>;
+  id: number;
+
+  completed: boolean;
+
+  text: string;
 };
 
 import * as ReactApollo from "react-apollo";
@@ -61,7 +63,6 @@ export const GetCurrencyDocument = gql`
   query getCurrency($curr: String!) {
     rates(currency: $curr) {
       currency
-      name
       rate
     }
   }
@@ -99,43 +100,46 @@ export function GetCurrencyHOC<TProps, TChildProps = any>(
     GetCurrencyProps<TChildProps>
   >(GetCurrencyDocument, operationOptions);
 }
-export const GetCurrency33Document = gql`
-  query getCurrency33($curr: String!) {
-    rates(currency: $curr) {
-      rate
+export const TodosDocument = gql`
+  query todos {
+    todos @client {
+      id
+      completed
+      text
     }
+    visibilityFilter @client
   }
 `;
-export class GetCurrency33Component extends React.Component<
-  Partial<ReactApollo.QueryProps<GetCurrency33Query, GetCurrency33Variables>>
+export class TodosComponent extends React.Component<
+  Partial<ReactApollo.QueryProps<TodosQuery, TodosVariables>>
 > {
   render() {
     return (
-      <ReactApollo.Query<GetCurrency33Query, GetCurrency33Variables>
-        query={GetCurrency33Document}
+      <ReactApollo.Query<TodosQuery, TodosVariables>
+        query={TodosDocument}
         {...(this as any)["props"] as any}
       />
     );
   }
 }
-export type GetCurrency33Props<TChildProps = any> = Partial<
-  ReactApollo.DataProps<GetCurrency33Query, GetCurrency33Variables>
+export type TodosProps<TChildProps = any> = Partial<
+  ReactApollo.DataProps<TodosQuery, TodosVariables>
 > &
   TChildProps;
-export function GetCurrency33HOC<TProps, TChildProps = any>(
+export function TodosHOC<TProps, TChildProps = any>(
   operationOptions:
     | ReactApollo.OperationOption<
         TProps,
-        GetCurrency33Query,
-        GetCurrency33Variables,
-        GetCurrency33Props<TChildProps>
+        TodosQuery,
+        TodosVariables,
+        TodosProps<TChildProps>
       >
     | undefined
 ) {
   return ReactApollo.graphql<
     TProps,
-    GetCurrency33Query,
-    GetCurrency33Variables,
-    GetCurrency33Props<TChildProps>
-  >(GetCurrency33Document, operationOptions);
+    TodosQuery,
+    TodosVariables,
+    TodosProps<TChildProps>
+  >(TodosDocument, operationOptions);
 }
