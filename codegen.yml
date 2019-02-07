@@ -1,0 +1,13 @@
+
+overwrite: true
+documents: src/**/*.{ts,tsx}
+generates:
+  components.tsx:
+    schema: "https://48p1r2roz4.sse.codesandbox.io"
+    config:
+      noNamespaces: true
+    plugins:
+      - typescript-common
+      - typescript-client
+      - typescript-react-apollo
+
