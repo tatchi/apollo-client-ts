@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { defaults, typeDefs, resolvers } from "./resolvers";
+import { defaults, resolvers } from "./resolvers";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
@@ -10,6 +10,9 @@ import gql from "graphql-tag";
 import { GetCurrencyQuery, GetCurrencyVariables } from "../components";
 import TodoList from "./TodoList";
 import { ApolloLink } from "apollo-link";
+import { loader } from "graphql.macro";
+const query = loader("./App.graphql");
+const typeDefs = loader("./localSchema.graphql");
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -23,20 +26,20 @@ const client = new ApolloClient({
   link: ApolloLink.from([stateLink, link])
 });
 
-export const MYQ = gql`
-  query getCurrency($curr: String!) {
-    rates(currency: $curr) {
-      currency
-      rate
-    }
-  }
-`;
+// export const MYQ = gql`
+//   query getCurrency($curr: String!) {
+//     rates(currency: $curr) {
+//       currency
+//       rate
+//     }
+//   }
+// `;
 
 const ExchangeRates = () => (
   <>
     <TodoList />
     <Query<GetCurrencyQuery, GetCurrencyVariables>
-      query={MYQ}
+      query={query}
       variables={{ curr: "USD" }}
     >
       {({ loading, error, data }) => {

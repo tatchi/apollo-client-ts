@@ -1,6 +1,6 @@
 
 overwrite: true
-documents: src/**/*.{ts,tsx}
+documents: src/**/*.{ts,tsx,graphql}
 generates:
   components.tsx:
     schema: 

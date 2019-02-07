@@ -7,22 +7,6 @@ export const defaults = {
   visibilityFilter: "SHOW_ALL"
 };
 
-export const typeDefs = gql`
-  type Todo {
-    id: Int!
-    text: String!
-    completed: Boolean!
-  }
-  type Mutation {
-    addTodo(text: String!): Todo
-    toggleTodo(id: Int!): Todo
-  }
-  extend type Query {
-    visibilityFilter: String
-    todos: [Todo]
-  }
-`;
-
 let nextTodoId = 0;
 
 export const resolvers = {
